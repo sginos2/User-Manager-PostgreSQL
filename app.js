@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-// app.post('/create', dB.createUser);
+// app.post('/create', db.createUser);
 
 // app.get('/table', db.displayUsers);
 
