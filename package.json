@@ -2,16 +2,20 @@
   "name": "user-manager-postgres",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "local": "node -r dotenv/config index.js",
+    "start": "node app.js",
+    "local": "node -r dotenv/config app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pg": "^8.6.0"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "pg": "^8.6.0",
+    "pug": "^3.0.2"
   }
 }
