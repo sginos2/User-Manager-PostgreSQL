@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-// app.post('/create', db.createUser);
+app.post('/create', db.createUser);
 
 app.get('/table', db.displayUsers);
 
@@ -28,7 +28,7 @@ app.post('/search', db.search);
 
 app.get('/edit/:userId', db.getUser);
 
-// app.post('/edit/:userId', db.editUser);
+app.post('/edit/:userId', db.editUser);
 
 app.listen(port, () => {
     console.log(`Listening To Port: ${port}`)
