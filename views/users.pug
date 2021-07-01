@@ -20,14 +20,14 @@ html
                 th Age
             each item in users
                 tr
-                    td= item._id
-                    td= item.firstName
-                    td= item.lastName
+                    td= item.id
+                    td= item.first_name
+                    td= item.last_name
                     td= item.email
-                    td= item.age
+                    td= item.user_age
                     td
-                        a(href=`/edit/${item._id}`, name='edit') Edit
+                        a(href=`/edit/${item.id}`, name='edit') Edit
                     td
                         form(method="post", action="/table")
-                            input(type="hidden", id="userId", name="userId" value=`${item._id}`)
+                            input(type="hidden", id="userId", name="userId" value=`${item.id}`)
                             button(name='delete', id="delete") Delete

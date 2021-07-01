@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -15,17 +16,17 @@ app.get('/', (req, res) => {
 
 // app.post('/create', db.createUser);
 
-// app.get('/table', db.displayUsers);
+app.get('/table', db.displayUsers);
 
-// app.post('/table', db.deleteUser);
+app.post('/table', db.deleteUser);
 
-// app.get('/sortOY', db.sortOY);
+app.get('/sortOY', db.sortOY);
 
-// app.get('sortYO', db.sortYO);
+app.get('/sortYO', db.sortYO);
 
-// app.post('/search', db.search);
+app.post('/search', db.search);
 
-// app.get('/edit/:userId', db.getUser);
+app.get('/edit/:userId', db.getUser);
 
 // app.post('/edit/:userId', db.editUser);
 

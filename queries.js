@@ -1,20 +1,22 @@
+const { query } = require('express');
 const { Pool } = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    SSL: 
+    ssl: 
     {
         rejectUnauthorized: false
     }
 });
 pool.connect();
+//this function needs to be async
 // const createUser = (req, res) => {
-//     let firstName = req.params.firstName;
-//     let lastName = req.params.lastName;
-//     let email = req.params.email;
-//     let age = req.params.age;
+//     let firstName = req.body.firstName;
+//     let lastName = req.body.lastName;
+//     let email = req.body.email;
+//     let age = req.body.age;
+//     let queryString = `INSERT INTO users (first_name, last_name, email, user_age) VALUES('${firstName}', '${lastName}', '${email}', ${age})`;
 //     pool.query(
-//         'INSERT INTO users (first_name, last_name, email, user_age) VALUES($1, $2, $3, $4)', 
-//         [firstName, lastName, email, age],
+//         queryString, 
 //         (err, result) => {
 //             if (err) {
 //                 throw err;
@@ -26,93 +28,99 @@ pool.connect();
 //     );
 // };
 
-// const displayUsers = (req, res) => {
-//     pool.query(
-//         'SELECT * FROM users', 
-//         (err, result) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             res.status(200).json(result.rows);
-//             res.render('users', {users: result});
-//         }
-//     );
-// };
+//THIS FUNCTION WORKS
+const displayUsers = (req, res) => {
+    pool.query(
+        'SELECT * FROM users', 
+        (err, result) => {
+            if (err) {
+                throw err;
+            }
+            res.render('users', {users: result.rows});
+        }
+    );
+};
 
-// const deleteUser = (req, res) => { 
-//     let userId = req.body.userId;
-//     pool.query(
-//         'DELETE FROM users WHERE id = $1', 
-//         [userId], 
-//         (err, result) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             console.log(`user deleted`);
-//             res.redirect('/table');
-//         }
-//     );
-// }; 
+//THIS FUNCTION WORKS
+const deleteUser = (req, res) => { 
+    let userId = req.body.userId;
+    pool.query(
+        'DELETE FROM users WHERE id = $1', 
+        [userId], 
+        (err, result) => {
+            if (err) {
+                throw err;
+            }
+            console.log(`user deleted`);
+            res.redirect('/table');
+        }
+    );
+}; 
 
-// const sortOY = (req, res) => {
-//     pool.query(
-//         'SELECT * FROM users ORDER BY user_age DESC', 
-//         (err, result) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             res.status(200).json(result.rows);
-//         }
-//     );
-// };
+//THIS FUNCTION WORKS
+const sortOY = (req, res) => {
+    pool.query(
+        'SELECT * FROM users ORDER BY user_age DESC', 
+        (err, result) => {
+            if (err) {
+                throw err;
+            }
+            res.render('users', {users: result.rows});
+        }
+    );
+};
 
-// const sortYO = (req, res) => {
-//     pool.query(
-//         'SELECT * FROM users ORDER BY user_age ASC', 
-//         (err, result) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             res.status(200).json(result.rows); 
-//         }
-//     );
-// };
+//THIS FUNCTION WORKS
+const sortYO = (req, res) => {
+    pool.query(
+        'SELECT * FROM users ORDER BY user_age ASC', 
+        (err, result) => {
+            if (err) {
+                throw err;
+            }
+            res.render('users', {users: result.rows});
+        }
+    );
+};
 
-// const search = (req, res) => {
-//     let searchStr = req.body.search.trim();
-//     pool.query(
-//         'SELECT * FROM users WHERE first_name = $1',
-//         [searchStr],
-//         (err, result) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             res.status(200).json(result.rows); 
-//         }
-//     );
-// };
+//THIS FUNCTION WORKS
+const search = (req, res) => {
+    let searchStr = req.body.search.trim();
+    pool.query(
+        `SELECT * FROM users WHERE first_name LIKE '${searchStr}%'`,
+        (err, result) => {
+            if (err) {
+                throw err;
+            }
+            res.render('users', {users: result.rows}); 
+        }
+    );
+};
 
-// const getUser = (req, res) => {
-//     let id = req.params.userId;
-//     pool.query(
-//         'SELECT * FROM users WHERE id = $1',
-//         [userId],
-//         (err, result) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             console.log(result);
-//             res.render('editIndex', {
-//                 firstNameField: result.first_name,
-//                 lastNameField: result.last_name,
-//                 emailField: result.email,
-//                 ageField: result.user_age,
-//                 userId: id
-//             });
-//         }
-//     );
-// };
+//THIS FUNCTION WORKS
+const getUser = (req, res) => {
+    let id = req.params.userId;
+    pool.query(
+        'SELECT * FROM users WHERE id = $1',
+        [id],
+        (err, result) => {
+            if (err) {
+                throw err;
+            }
+            let userInfo = result.rows[0];
+            console.log(result.rows);
+            res.render('editIndex', {
+                firstNameField: userInfo.first_name,
+                lastNameField: userInfo.last_name,
+                emailField: userInfo.email,
+                ageField: userInfo.user_age,
+                userId: id
+            });
+        }
+    );
+};
 
+//this function needs to be async
 // const editUser = (req, res) => {
 //     let id  = req.params.id;
 //     let firstName = req.params.firstName;
@@ -132,13 +140,13 @@ pool.connect();
 //     );
 // }
 
-// module.exports = {
-//     createUser,
-//     displayUsers, 
-//     deleteUser, 
-//     sortOY,
-//     sortYO,
-//     search,
-//     getUser,
-//     editUser
-// };
+module.exports = {
+    // createUser,
+    displayUsers, 
+    deleteUser, 
+    sortOY,
+    sortYO,
+    search,
+    getUser,
+    // editUser
+};
